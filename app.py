@@ -34,9 +34,15 @@ CV_EN_PATH = Path("assets/cv/cv_en.pdf")
 
 PROJECT_IMAGES: Dict[str, List[Path]] = {
     "project_1": [
-        Path("assets/cv/slide/Project_1_Slide_1.png"),
-        Path("assets/cv/slide/Project_1_Slide_2.png"),
-        Path("assets/cv/slide/Project_1_Slide_3.png"),
+        Path("assets/cv/slide/projet1/projet1slide1.png"),
+        Path("assets/cv/slide/projet1/projet1slide2.png"),
+        Path("assets/cv/slide/projet1/projet1slide3.png"),
+        Path("assets/cv/slide/projet1/projet1slide4.png"),
+        Path("assets/cv/slide/projet1/projet1slide5.png"),
+        Path("assets/cv/slide/projet1/projet1slide6.png"),
+        Path("assets/cv/slide/projet1/projet1slide7.png"),
+        Path("assets/cv/slide/projet1/projet1slide8.png"),
+
     ],
     "project_2": [
         Path("assets/cv/slide/Project_2_Slide_1.png"),

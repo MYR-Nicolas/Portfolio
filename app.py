@@ -50,7 +50,7 @@ PROJECT_IMAGES: Dict[str, List[Path]] = {
 }
 
 PROJECT_LINKS = {
-    "project_1": "https://your-project-1.streamlit.app",
+    "project_1": "https://mlpricingoptimization-kxjlxkbc2fllxyyh46ndaj.streamlit.app/",
     "project_2": "https://featurestore-fgjbmprebhrkn39kwrkpcq.streamlit.app/",
     "project_3": "https://aiagentformonitoringinsight-mltbbbymjfxuwjlzz2dl8q.streamlit.app/",
 }

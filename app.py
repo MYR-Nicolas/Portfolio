@@ -14,19 +14,13 @@ st.set_page_config(
     layout="wide",
 )
 
-PAGE_TITLE = "Data Scientist – Business & Economic Analytics"
+PAGE_TITLE = "Data Scientist - Spécialisation MLOps & DevOps"
 
-PRESENTATION_TEXT = """I am a Data Scientist specializing in business analytics, with a strong focus on transforming data into actionable business insights.
-
-During my experience at EDF, I worked autonomously on critical data quality challenges related to HR data, directly impacting the reliability of key business indicators. I developed outlier detection and indicator classification models, which helped improve data consistency and made it easier for teams to use data for operational decision-making.
-
-I also designed a proof of concept for a database aimed at structuring and historizing key indicators, with the goal of improving data reliability over time and reducing inconsistencies caused by manual processes. This work contributed to establishing a more robust and scalable data management approach.
-
-As part of the project, I supported the handover to industrialization teams by clearly presenting both technical and functional choices, ensuring a smooth transition and minimizing risks during the move to production.
-
-In parallel, I develop personal projects based on real-world use cases, particularly in forecasting, where I have improved model accuracy by significantly reducing prediction error.
-
-Today, I am looking to contribute to projects where data drives tangible business impact.
+PRESENTATION_TEXT = """My drive to transform raw data into intelligent systems, shaped by a dual background 
+in economics and machine learning engineering, pushes me to go far beyond prototyping. 
+Passionate about designing robust data pipelines, motivated by the challenges of scalability and production performance, 
+and committed to a rigorous MLOps approach in cloud environments such as GCP, 
+my goal is to contribute to organizations that turn data into a true competitive advantage from business framing to production deployment.
 """
 
 CV_FR_PATH = Path("assets/cv/CV_MAYEUR_Nicolas.pdf")
@@ -42,6 +36,7 @@ PROJECT_IMAGES: Dict[str, List[Path]] = {
         Path("assets/cv/slide/projet1/projet1slide6.png"),
         Path("assets/cv/slide/projet1/projet1slide7.png"),
         Path("assets/cv/slide/projet1/projet1slide8.png"),
+        Path("assets/cv/slide/projet1/projet1slide9.png"),
 
     ],
     "project_2": [

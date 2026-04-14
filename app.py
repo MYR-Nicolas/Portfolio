@@ -623,7 +623,7 @@ with col:
         )
         st.markdown(f'<div class="presentation-text">{text}</div>', unsafe_allow_html=True)
         st.button(
-            "Voir moins" if st.session_state.presentation_expanded else "Voir plus",
+            "Less" if st.session_state.presentation_expanded else "More",
             key="presentation_toggle",
             on_click=toggle_presentation,
         )

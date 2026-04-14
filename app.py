@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide",
 )
 
-PAGE_TITLE = "Data Scientist - Spécialisation MLOps & DevOps"
+PAGE_TITLE = "Data Scientist - Spécialisation MLOps"
 
 PRESENTATION_TEXT = """My drive to transform raw data into intelligent systems, shaped by a dual background 
 in economics and machine learning engineering, pushes me to go far beyond prototyping. 

@@ -14,13 +14,11 @@ st.set_page_config(
     layout="wide",
 )
 
-PAGE_TITLE = "Data Scientist - Spécialisation MLOps"
+PAGE_TITLE = "Data Engineer with Machine Learning expertise | GCP"
 
-PRESENTATION_TEXT = """My drive to transform raw data into intelligent systems, shaped by a dual background 
-in economics and machine learning engineering, pushes me to go far beyond prototyping. 
-Passionate about designing robust data pipelines, motivated by the challenges of scalability and production performance, 
-and committed to a rigorous MLOps approach in cloud environments such as GCP, 
-my goal is to contribute to organizations that turn data into a true competitive advantage from business framing to production deployment.
+PRESENTATION_TEXT = """I build end-to-end machine learning systems that transform raw data into scalable, production-ready solutions.
+With a background in economics and machine learning engineering, I focus on designing robust data pipelines, ensuring data quality, and deploying models in cloud environments such as Google Cloud Platform (GCP). My approach combines data engineering, MLOps practices, and business understanding to deliver reliable and high-impact data products.
+I am particularly motivated by challenges related to scalability, system performance, and turning data into a real competitive advantage.
 """
 
 CV_FR_PATH = Path("assets/cv/CV_MAYEUR_Nicolas.pdf")

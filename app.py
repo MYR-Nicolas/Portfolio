@@ -14,9 +14,8 @@ st.set_page_config(
     layout="wide",
 )
 
-PRESENTATION_TEXT = """I build end-to-end machine learning systems that transform raw data into scalable, production-ready solutions.
-With a background in economics and machine learning engineering, I focus on designing robust data pipelines, ensuring data quality, and deploying models in cloud environments such as Google Cloud Platform (GCP). My approach combines data engineering, MLOps practices, and business understanding to deliver reliable and high-impact data products.
-I am particularly motivated by challenges related to scalability, system performance, and turning data into a real competitive advantage."""
+PRESENTATION_TEXT = """Data Engineer specialized in Machine Learning systems on Google Cloud Platform. 
+I build production-grade data and ML infrastructures combining modern data architectures, feature engineering pipelines, monitoring and scalable cloud-native deployments."""
 
 CV_FR_PATH = Path("assets/cv/CV_MAYEUR_Nicolas.pdf")
 CV_EN_PATH = Path("assets/cv/cv_en.pdf")

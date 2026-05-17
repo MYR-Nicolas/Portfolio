@@ -10,22 +10,31 @@ import streamlit as st
 # CONFIG
 # =========================
 st.set_page_config(
-    page_title="Portfolio",
+    page_title="Nicolas Mayeur — Data Engineer specialized in Machine Learning on GCP",
     layout="wide",
 )
 
-PAGE_TITLE = "Data Engineer with Machine Learning expertise | GCP"
-
 PRESENTATION_TEXT = """I build end-to-end machine learning systems that transform raw data into scalable, production-ready solutions.
 With a background in economics and machine learning engineering, I focus on designing robust data pipelines, ensuring data quality, and deploying models in cloud environments such as Google Cloud Platform (GCP). My approach combines data engineering, MLOps practices, and business understanding to deliver reliable and high-impact data products.
-I am particularly motivated by challenges related to scalability, system performance, and turning data into a real competitive advantage.
-"""
+I am particularly motivated by challenges related to scalability, system performance, and turning data into a real competitive advantage."""
 
 CV_FR_PATH = Path("assets/cv/CV_MAYEUR_Nicolas.pdf")
 CV_EN_PATH = Path("assets/cv/cv_en.pdf")
 
 PROJECT_IMAGES: Dict[str, List[Path]] = {
     "project_1": [
+        Path("assets/cv/slide/project2/projet2slide1.png"),
+        Path("assets/cv/slide/project2/projet2slide2.png"),
+        Path("assets/cv/slide/project2/projet2slide3.png"),
+        Path("assets/cv/slide/project2/projet2slide4.png"),
+        Path("assets/cv/slide/project2/projet2slide5.png"),
+        Path("assets/cv/slide/project2/projet2slide6.png"),
+        Path("assets/cv/slide/project2/projet2slide7.png"),
+        Path("assets/cv/slide/project2/projet2slide8.png"),
+        Path("assets/cv/slide/project2/projet2slide9.png"),
+        Path("assets/cv/slide/project2/projet2slide10.png"),
+    ],
+    "project_2": [
         Path("assets/cv/slide/projet1/projet1slide1.png"),
         Path("assets/cv/slide/projet1/projet1slide2.png"),
         Path("assets/cv/slide/projet1/projet1slide3.png"),
@@ -35,11 +44,6 @@ PROJECT_IMAGES: Dict[str, List[Path]] = {
         Path("assets/cv/slide/projet1/projet1slide7.png"),
         Path("assets/cv/slide/projet1/projet1slide8.png"),
         Path("assets/cv/slide/projet1/projet1slide9.png"),
-
-    ],
-    "project_2": [
-        Path("assets/cv/slide/Project_2_Slide_1.png"),
-        Path("assets/cv/slide/Project_2_Slide_2.png"),
     ],
     "project_3": [
         Path("assets/cv/slide/Project_3_Slide_1.png"),
@@ -49,15 +53,39 @@ PROJECT_IMAGES: Dict[str, List[Path]] = {
 }
 
 PROJECT_LINKS = {
-    "project_1": "https://mlpricingoptimization-kxjlxkbc2fllxyyh46ndaj.streamlit.app/",
-    "project_2": "https://featurestore-ddtx8txqfrtjrnlozeybu5.streamlit.app/Pipeline_Monitoring",
+    "project_1": "https://featurestore-ddtx8txqfrtjrnlozeybu5.streamlit.app/Pipeline_Monitoring",
+    "project_2": "https://mlpricingoptimization-kxjlxkbc2fllxyyh46ndaj.streamlit.app/",
     "project_3": "https://aiagentformonitoringinsight-mltbbbymjfxuwjlzz2dl8q.streamlit.app/",
 }
 
 PROJECT_TITLES = {
-    "project_1": "ML Pricing optimisation",
-    "project_2": "Feature Store",
-    "project_3": "AI agent for monitoring insight",
+    "project_1": "GCP Feature Store (Lakehouse)",
+    "project_2": "ML Pricing Optimisation",
+    "project_3": "AI Agent for Monitoring Insight",
+}
+
+PROJECT_NUMS = {
+    "project_1": "01",
+    "project_2": "02",
+    "project_3": "03",
+}
+
+# Tags grouped by category: (category_label, color_key, [tags])
+# color_key: "blue" | "teal" | "violet"
+PROJECT_BADGE_GROUPS: Dict[str, List[tuple]] = {
+    "project_1": [
+        ("Data Engineering", "blue",   ["BigQuery", "dbt", "Lakehouse", "GCS", "Data Modeling"]),
+        ("ML Systems",       "teal",   ["Feature Store", "Time Series ML", "Feature Engineering", "Monitoring"]),
+        ("Cloud & MLOps",    "violet", ["Cloud Run", "CI/CD", "Docker", "GitHub Actions"]),
+    ],
+    "project_2": [
+        ("ML Systems",       "teal",   ["Random Forest", "SHAP", "ML Pipelines", "Feature Engineering"]),
+        ("Cloud & MLOps",    "violet", ["FastAPI", "Docker", "Streamlit"]),
+    ],
+    "project_3": [
+        ("ML Systems",       "teal",   ["LLM", "RAG", "Agent", "ML Pipelines"]),
+        ("Cloud & MLOps",    "violet", ["Vertex AI", "GCP", "CI/CD"]),
+    ],
 }
 
 IMAGE_DISPLAY_WIDTH = 1100
@@ -75,25 +103,45 @@ def read_bytes(path: Path) -> bytes:
     return path.read_bytes()
 
 
-def truncate_text(text: str, max_chars: int = 500) -> str:
+def truncate_text(text: str, max_chars: int = 320) -> str:
     text = text.strip()
     if len(text) <= max_chars:
         return text
     cut = text[:max_chars]
     if " " in cut:
         cut = cut.rsplit(" ", 1)[0]
-    return cut + "…"
+    return cut + "\u2026"
 
 
 def toggle_presentation() -> None:
     st.session_state.presentation_expanded = not st.session_state.presentation_expanded
 
 
-def render_section_label(label: str) -> None:
+def render_section_label(label: str, num: str = "") -> None:
+    num_html = f'<span class="section-num">{num}</span>' if num else ""
     st.markdown(
-        f'<div class="section-label">{label}</div>',
+        f'<div class="section-label">{num_html}'
+        f'<span class="section-text">{label}</span>'
+        f'<span class="section-line"></span></div>',
         unsafe_allow_html=True,
     )
+
+
+def render_badge_groups(groups: List[tuple]) -> str:
+    """Render grouped skill badges as HTML."""
+    html = '<div class="badge-groups">'
+    for category, color, tags in groups:
+        badges = "".join(
+            f'<span class="badge badge-{color}">{t}</span>' for t in tags
+        )
+        html += (
+            f'<div class="badge-group">'
+            f'<span class="badge-category">{category}</span>'
+            f'<div class="badge-row">{badges}</div>'
+            f'</div>'
+        )
+    html += "</div>"
+    return html
 
 
 def render_image_frame(image_path: Path, caption: Optional[str] = None) -> None:
@@ -110,25 +158,33 @@ def render_image_frame(image_path: Path, caption: Optional[str] = None) -> None:
 def render_project_carousel(
     container_key: str,
     title: str,
+    num: str,
     images: List[Path],
     key_prefix: str,
     url: Optional[str] = None,
+    badge_groups: Optional[List[tuple]] = None,
 ) -> None:
     with st.container(key=container_key):
-        st.markdown(f'<div class="project-title">{title}</div>', unsafe_allow_html=True)
+        badges_html = render_badge_groups(badge_groups) if badge_groups else ""
+
+        st.markdown(
+            f'<div class="project-header">'
+            f'<span class="project-num">{num}</span>'
+            f'<div class="project-title">{title}</div>'
+            f'</div>'
+            f'{badges_html}',
+            unsafe_allow_html=True,
+        )
 
         if url:
-            _, col, _ = st.columns([1, 2, 1])
+            _, col, _ = st.columns([2, 1.5, 2])
             with col:
-                st.link_button("Open project", url, width="stretch")
+                st.link_button("View project \u2192", url, width="stretch")
 
         valid = [img for img in images if img.exists()]
 
         if not valid:
-            st.markdown(
-                '<div class="empty-box">No image available</div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<div class="empty-box">No image available</div>', unsafe_allow_html=True)
             return
 
         if len(valid) == 1:
@@ -139,23 +195,17 @@ def render_project_carousel(
         if state_key not in st.session_state:
             st.session_state[state_key] = 0
 
-        left, center, right = st.columns([1, 8, 1])
+        left, center, right = st.columns([1, 10, 1])
 
         with left:
-            if st.button("←", key=f"{key_prefix}_prev"):
-                st.session_state[state_key] = (
-                    st.session_state[state_key] - 1
-                ) % len(valid)
-
+            if st.button("\u2190", key=f"{key_prefix}_prev"):
+                st.session_state[state_key] = (st.session_state[state_key] - 1) % len(valid)
         with right:
-            if st.button("→", key=f"{key_prefix}_next"):
-                st.session_state[state_key] = (
-                    st.session_state[state_key] + 1
-                ) % len(valid)
-
+            if st.button("\u2192", key=f"{key_prefix}_next"):
+                st.session_state[state_key] = (st.session_state[state_key] + 1) % len(valid)
         with center:
             idx = st.session_state[state_key]
-            render_image_frame(valid[idx], f"Image {idx + 1} / {len(valid)}")
+            render_image_frame(valid[idx], f"{idx + 1} / {len(valid)}")
 
 
 # =========================
@@ -166,527 +216,526 @@ if "presentation_expanded" not in st.session_state:
 
 
 # =========================
-# CSS : DARK FUTURIST
+# CSS — ELECTRIC BLUE
 # =========================
 CSS = """
-/* =========================
-   GLOBAL APP
-========================= */
-.stApp {
-    background:
-        radial-gradient(circle at 12% 12%, rgba(0, 255, 247, 0.08), transparent 20%),
-        radial-gradient(circle at 88% 10%, rgba(129, 71, 255, 0.10), transparent 18%),
-        radial-gradient(circle at 50% 100%, rgba(0, 180, 255, 0.07), transparent 24%),
-        linear-gradient(180deg, #02050b 0%, #050913 40%, #070d19 100%);
-    color: #f3f8ff;
-}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap');
 
-/* faint cyber grid */
-.stApp::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 42px 42px;
-    mask-image: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent 65%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent 65%);
-    opacity: 0.18;
-    z-index: 0;
+.stApp {
+    background: #F0F4FF;
+    color: #0F1A3E;
 }
 
 div.block-container {
-    max-width: 1280px;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    position: relative;
-    z-index: 1;
+    max-width: 1160px;
+    padding-top: 0;
+    padding-bottom: 5rem;
 }
 
-header[data-testid="stHeader"] {
-    background: transparent;
-}
+header[data-testid="stHeader"] { background: transparent; }
+#MainMenu, footer { visibility: hidden; }
+[data-testid="stToolbar"] { display: none; }
 
 html, body, [class*="css"] {
-    font-family: "Inter", "Segoe UI", sans-serif;
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* =========================
-   TYPO / LABELS
-========================= */
-.section-label {
-    text-align: center;
-    font-size: 1.02rem;
-    font-weight: 800;
-    letter-spacing: 2.6px;
-    text-transform: uppercase;
-    color: #8ef8ff;
-    margin: 0.15rem 0 1rem 0;
-    text-shadow:
-        0 0 8px rgba(0, 245, 255, 0.28),
-        0 0 24px rgba(123, 44, 255, 0.10);
-    position: relative;
-}
-
-.section-label::after {
-    content: "";
-    display: block;
-    width: 140px;
-    height: 1px;
-    margin: 0.8rem auto 0 auto;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0,245,255,0.9),
-        rgba(123,44,255,0.8),
-        transparent
-    );
-    box-shadow: 0 0 12px rgba(0,245,255,0.25);
-}
-
-/* =========================
-   TITLE BOX
-========================= */
-.st-key-title_box {
+/* === HERO === */
+.st-key-hero_box {
+    background: #2D5BE3;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding: 3.5rem 4rem 3.2rem;
     position: relative;
     overflow: hidden;
-    border-radius: 24px;
-    padding: 34px 28px;
-    margin-bottom: 2.2rem;
-    background:
-        linear-gradient(135deg, rgba(10, 16, 28, 0.94), rgba(14, 22, 39, 0.88)),
-        rgba(255,255,255,0.02);
-    border: 1px solid rgba(119, 221, 255, 0.14);
-    box-shadow:
-        0 16px 48px rgba(0,0,0,0.48),
-        0 0 24px rgba(0,245,255,0.08),
-        0 0 42px rgba(123,44,255,0.08),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    transition: all 0.28s ease;
 }
 
-.st-key-title_box::before {
+.st-key-hero_box::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(
-            110deg,
-            transparent 0%,
-            rgba(255,255,255,0.04) 18%,
-            transparent 36%
-        );
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
     pointer-events: none;
 }
 
-.st-key-title_box:hover {
-    transform: translateY(-2px);
-    border-color: rgba(0,245,255,0.22);
-    box-shadow:
-        0 18px 56px rgba(0,0,0,0.54),
-        0 0 32px rgba(0,245,255,0.12),
-        0 0 50px rgba(123,44,255,0.10),
-        inset 0 1px 0 rgba(255,255,255,0.07);
+.st-key-hero_box::after {
+    content: "";
+    position: absolute;
+    bottom: -80px; right: 160px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
 }
 
-.st-key-title_box h1 {
-    margin: 0;
-    text-align: center;
-    font-size: 2.15rem;
-    font-weight: 900;
-    letter-spacing: 2.2px;
+.hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: #f7fbff;
-    text-shadow:
-        0 0 10px rgba(0,245,255,0.22),
-        0 0 28px rgba(123,44,255,0.14);
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.9rem;
 }
 
-/* =========================
-   PANELS / CARDS
-========================= */
-.st-key-presentation_box,
+.hero-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+}
+
+.st-key-hero_box a[data-testid="stLinkButton"] {
+    display: inline-flex !important;
+    width: auto !important;
+    min-height: 44px !important;
+    padding: 0.5rem 1.4rem !important;
+    border-radius: 8px !important;
+    border: 1.5px solid rgba(255,255,255,0.6) !important;
+    background: rgba(255,255,255,0.12) !important;
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    margin-top: 1.2rem;
+    transition: all 0.18s !important;
+}
+
+.st-key-hero_box a[data-testid="stLinkButton"]:hover {
+    background: rgba(255,255,255,0.22) !important;
+    border-color: #ffffff !important;
+    transform: none;
+    box-shadow: none !important;
+}
+
+/* === SECTION LABELS === */
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 2.2rem 0 1.1rem;
+}
+
+.section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #2D5BE3;
+    letter-spacing: 1px;
+}
+
+.section-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #3A5BD9;
+    white-space: nowrap;
+}
+
+.section-line {
+    flex: 1;
+    height: 1.5px;
+    background: #C5D1F7;
+}
+
+/* === CARDS === */
+.st-key-about_box,
 .st-key-cv_box,
 .st-key-project_1_box,
 .st-key-project_2_box,
 .st-key-project_3_box {
-    position: relative;
-    overflow: hidden;
-    border-radius: 22px;
-    padding: 24px;
-    margin-bottom: 1.6rem;
-    background:
-        linear-gradient(180deg, rgba(8, 13, 24, 0.95), rgba(6, 10, 18, 0.98));
-    border: 1px solid rgba(140, 214, 255, 0.10);
-    box-shadow:
-        0 16px 38px rgba(0,0,0,0.44),
-        0 0 18px rgba(0,245,255,0.05),
-        inset 0 1px 0 rgba(255,255,255,0.04);
-    backdrop-filter: blur(8px);
-    transition: all 0.25s ease;
+    background: #ffffff;
+    border: 1px solid #D4DCFA;
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.st-key-presentation_box::before,
-.st-key-cv_box::before,
-.st-key-project_1_box::before,
-.st-key-project_2_box::before,
-.st-key-project_3_box::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 18px;
-    right: 18px;
-    height: 1px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0,245,255,0.45),
-        rgba(123,44,255,0.32),
-        transparent
-    );
-    opacity: 0.9;
+.st-key-about_box:hover,
+.st-key-cv_box:hover {
+    border-color: #2D5BE3;
+    box-shadow: 0 4px 24px rgba(45,91,227,0.08);
 }
 
-.st-key-presentation_box:hover,
-.st-key-cv_box:hover,
+.st-key-project_1_box,
+.st-key-project_2_box,
+.st-key-project_3_box {
+    border-left: 3px solid #2D5BE3;
+}
+
 .st-key-project_1_box:hover,
 .st-key-project_2_box:hover,
 .st-key-project_3_box:hover {
-    transform: translateY(-3px);
-    border-color: rgba(0,245,255,0.16);
-    box-shadow:
-        0 20px 48px rgba(0,0,0,0.52),
-        0 0 24px rgba(0,245,255,0.08),
-        0 0 36px rgba(123,44,255,0.07),
-        inset 0 1px 0 rgba(255,255,255,0.05);
+    border-color: #2D5BE3;
+    box-shadow: 0 4px 24px rgba(45,91,227,0.08);
 }
 
-/* =========================
-   TEXT
-========================= */
+/* === PRESENTATION TEXT === */
 .presentation-text {
-    font-size: 1.02rem;
-    line-height: 1.85;
-    color: #d9e8fb;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: #3A4A7A;
+    margin-bottom: 1.2rem;
+    max-width: 74ch;
+}
+
+/* === PROJECT HEADER === */
+.project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-/* =========================
-   PROJECT TITLES (FUTURIST)
-========================= */
+.project-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #C5D1F7;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
 .project-title {
-    text-align: center;
-    font-size: 1.25rem;
-    font-weight: 900;
-    letter-spacing: 1px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0F1A3E;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+/* === HERO BADGES (white-on-blue variant) === */
+.st-key-hero_box .badge-groups {
+    margin-bottom: 0;
+    margin-top: 0.2rem;
+}
+
+.st-key-hero_box .badge-category {
+    color: rgba(255,255,255,0.45);
+}
+
+.st-key-hero_box .badge-blue {
+    color: #ffffff;
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.25);
+}
+
+.st-key-hero_box .badge-teal {
+    color: #9FE1CB;
+    background: rgba(13,148,120,0.25);
+    border-color: rgba(159,225,203,0.35);
+}
+
+.st-key-hero_box .badge-violet {
+    color: #C8C2F2;
+    background: rgba(83,74,183,0.3);
+    border-color: rgba(200,194,242,0.35);
+}
+
+/* === SKILL BADGES === */
+.badge-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
     margin-bottom: 1.2rem;
-
-    background: linear-gradient(
-        90deg,
-        #8ef8ff,
-        #a88bff,
-        #8ef8ff
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    text-shadow:
-        0 0 10px rgba(0,245,255,0.35),
-        0 0 22px rgba(123,44,255,0.25);
-
-    position: relative;
 }
 
-.project-title::after {
-    content: "";
-    display: block;
-    width: 120px;
-    height: 2px;
-    margin: 0.6rem auto 0 auto;
-
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0,245,255,0.9),
-        rgba(123,44,255,0.9),
-        transparent
-    );
-
-    box-shadow:
-        0 0 10px rgba(0,245,255,0.4),
-        0 0 20px rgba(123,44,255,0.3);
+.badge-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
 }
 
+.badge-category {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8899CC;
+    white-space: nowrap;
+    min-width: 110px;
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.63rem;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    border-radius: 4px;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid;
+}
+
+.badge-blue {
+    color: #1A3ABF;
+    background: #EBF0FF;
+    border-color: #B8C8F8;
+}
+
+.badge-teal {
+    color: #0F6E56;
+    background: #E0FAF3;
+    border-color: #9FE1CB;
+}
+
+.badge-violet {
+    color: #4A35A8;
+    background: #EEECFD;
+    border-color: #C8C2F2;
+}
+
+/* === IMAGE FRAME === */
 .carousel-counter {
     text-align: center;
-    color: #91a7cb;
-    margin-top: 0.85rem;
-    font-size: 0.92rem;
-    letter-spacing: 0.3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    color: #A0AECF;
+    margin-top: 0.8rem;
 }
 
-/* =========================
-   IMAGE FRAME
-========================= */
 .image-frame {
-    padding: 1rem;
-    margin: 1rem 0 1.5rem 0;
-    border-radius: 22px;
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,0.025),
-        rgba(255,255,255,0.012)
-    );
-    border: 1px solid rgba(255,255,255,0.06);
-    box-shadow:
-        0 25px 60px rgba(0,0,0,0.52),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.image-frame [data-testid="stImage"] {
-    border-radius: 18px;
+    margin: 1rem 0 0.5rem;
+    border-radius: 8px;
     overflow: hidden;
+    border: 1px solid #D4DCFA;
+    background: #F8F9FF;
 }
 
 .image-frame [data-testid="stImage"] img {
-    border-radius: 18px !important;
+    border-radius: 0 !important;
     width: 100%;
     height: auto;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.50) !important;
-    filter: none !important;
-    transform: none !important;
+    display: block;
+    opacity: 0.97;
+    transition: opacity 0.2s;
 }
 
-/* hide fullscreen */
+.image-frame:hover [data-testid="stImage"] img { opacity: 1; }
+
 button[title="View fullscreen"],
-button[aria-label="View fullscreen"] {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
+button[aria-label="View fullscreen"] { display: none !important; }
+[data-testid="stImage"] button { display: none !important; }
 
-[data-testid="stImage"] button {
-    display: none !important;
-}
-
-/* =========================
-   EMPTY STATE
-========================= */
+/* === EMPTY STATE === */
 .empty-box {
-    border: 1px dashed rgba(255,255,255,0.10);
-    border-radius: 16px;
-    padding: 1rem;
+    border: 1px dashed #C5D1F7;
+    border-radius: 8px;
+    padding: 2rem;
     text-align: center;
-    color: #94a7c3;
-    background: rgba(255,255,255,0.02);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.03);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    color: #A0AECF;
 }
 
-/* =========================
-   BUTTONS
-========================= */
-.stButton > button,
+/* === NAV BUTTONS === */
+.stButton > button {
+    min-height: 44px;
+    border-radius: 8px !important;
+    border: 1.5px solid #C5D1F7 !important;
+    background: #ffffff !important;
+    color: #2D5BE3 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    transition: all 0.15s !important;
+    width: 100%;
+}
+
+.stButton > button:hover {
+    border-color: #2D5BE3 !important;
+    background: #EBF0FF !important;
+    color: #1A3ABF !important;
+}
+
+.st-key-about_box .stButton > button {
+    min-height: 36px;
+    font-size: 0.8rem !important;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* === DOWNLOAD BUTTONS === */
 .stDownloadButton > button {
     width: 100%;
-    min-height: 50px;
-    border-radius: 14px !important;
-    border: 1px solid rgba(144, 223, 255, 0.14) !important;
-    background:
-        linear-gradient(180deg, rgba(13, 20, 36, 0.98), rgba(8, 13, 24, 0.98)) !important;
-    color: #f6fbff !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.25px;
-    box-shadow:
-        0 10px 24px rgba(0,0,0,0.34),
-        0 0 14px rgba(0,245,255,0.05),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-    transition: all 0.22s ease !important;
+    min-height: 54px;
+    border-radius: 8px !important;
+    border: 1.5px solid #C5D1F7 !important;
+    background: #ffffff !important;
+    color: #0F1A3E !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: none !important;
+    transition: all 0.18s !important;
 }
 
-/* =========================
-   PROJECT BUTTON (FUTURIST CTA)
-========================= */
-a[data-testid="stLinkButton"] {
-    position: relative;
-    overflow: hidden;
+.stDownloadButton > button:hover {
+    border-color: #2D5BE3 !important;
+    background: #EBF0FF !important;
+    color: #2D5BE3 !important;
+}
 
+/* === LINK BUTTON === */
+a[data-testid="stLinkButton"] {
     display: inline-flex !important;
     justify-content: center;
     align-items: center;
-
     width: 100% !important;
-    min-height: 52px !important;
-
-    padding: 0.6rem 1rem !important;
-    border-radius: 16px !important;
-
-    border: 1px solid rgba(0,245,255,0.35) !important;
-
-    background:
-        linear-gradient(180deg, rgba(10,18,32,0.95), rgba(6,10,20,0.95)) !important;
-
-    color: #e9fbff !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.5px;
-
+    min-height: 48px !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 8px !important;
+    border: none !important;
+    background: #2D5BE3 !important;
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     text-decoration: none !important;
-
-    box-shadow:
-        0 10px 26px rgba(0,0,0,0.45),
-        0 0 18px rgba(0,245,255,0.12),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-
-    transition: all 0.25s ease !important;
-}
-
-a[data-testid="stLinkButton"]::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0,245,255,0.25),
-        transparent
-    );
-
-    transition: left 0.5s ease;
-}
-
-a[data-testid="stLinkButton"]:hover::before {
-    left: 100%;
+    box-shadow: 0 4px 14px rgba(45,91,227,0.25) !important;
+    transition: all 0.18s !important;
 }
 
 a[data-testid="stLinkButton"]:hover {
-    transform: translateY(-2px);
-
-    border-color: rgba(0,245,255,0.7) !important;
-    color: #ffffff !important;
-
-    box-shadow:
-        0 16px 34px rgba(0,0,0,0.5),
-        0 0 28px rgba(0,245,255,0.25),
-        0 0 40px rgba(123,44,255,0.15),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+    background: #1A3ABF !important;
+    box-shadow: 0 6px 20px rgba(45,91,227,0.35) !important;
+    transform: translateY(-1px);
 }
 
-div[data-testid="column"] .stButton > button {
-    min-height: 56px;
-    font-size: 1.08rem !important;
-}
-
-/* =========================
-   STREAMLIT TEXT
-========================= */
-.stCaption {
-    color: #7d93b3 !important;
-}
-
-p, li, span, div {
-    color: inherit;
-}
+p, li, span, div { color: inherit; }
+.stCaption { color: #A0AECF !important; }
 """
 inject_css(CSS)
 
 
 # =========================
-# TITLE
+# HERO
 # =========================
-_, col, _ = st.columns([0.5, 8, 0.5])
+with st.container(key="hero_box"):
+    hero_badge_groups = [
+        ("Data Engineering", "blue",   ["BigQuery", "dbt", "Lakehouse", "GCS", "Data Modeling"]),
+        ("ML Systems",       "teal",   ["Feature Store", "Time Series ML", "ML Pipelines", "Feature Engineering", "Monitoring"]),
+        ("Cloud & MLOps",    "violet", ["Cloud Run", "CI/CD", "Docker", "GitHub Actions", "Infrastructure Design"]),
+    ]
+    badges_html = render_badge_groups(hero_badge_groups)
+    st.markdown(
+        '<div class="hero-eyebrow">Portfolio — Nicolas Mayeur</div>'
+        '<div class="hero-name">Data Engineer<br>with ML expertise</div>'
+        f'{badges_html}',
+        unsafe_allow_html=True,
+    )
+    st.link_button("View GitHub repos \u2192", "https://github.com/MYR-Nicolas", type="primary")
+
+
+# =========================
+# ABOUT
+# =========================
+_, col, _ = st.columns([0.3, 9, 0.3])
 with col:
-    with st.container(key="title_box"):
-        st.markdown(f"<h1>{PAGE_TITLE}</h1>", unsafe_allow_html=True)
-
-
-# =========================
-# PRESENTATION
-# =========================
-_, col, _ = st.columns([0.5, 8, 0.5])
-with col:
-    render_section_label("Presentation")
-
-    with st.container(key="presentation_box"):
+    render_section_label("About", "00 —")
+    with st.container(key="about_box"):
         text = (
             PRESENTATION_TEXT
             if st.session_state.presentation_expanded
             else truncate_text(PRESENTATION_TEXT)
         )
         st.markdown(f'<div class="presentation-text">{text}</div>', unsafe_allow_html=True)
-        st.button(
-            "Less" if st.session_state.presentation_expanded else "More",
-            key="presentation_toggle",
-            on_click=toggle_presentation,
-        )
+        label = "Show less" if st.session_state.presentation_expanded else "Read more"
+        st.button(label, key="presentation_toggle", on_click=toggle_presentation)
 
 
 # =========================
 # CV
 # =========================
-_, col, _ = st.columns([0.5, 8, 0.5])
+_, col, _ = st.columns([0.3, 9, 0.3])
 with col:
-    render_section_label("My CVs")
-
+    render_section_label("Curriculum Vitæ", "01 —")
     with st.container(key="cv_box"):
         c1, c2 = st.columns(2)
-
         with c1:
             if CV_FR_PATH.exists():
                 st.download_button(
-                    "CV FR",
+                    "Download CV — FR",
                     read_bytes(CV_FR_PATH),
                     "CV_MAYEUR_Nicolas.pdf",
                     mime="application/pdf",
                 )
             else:
-                st.caption("Coming Soon")
-
+                st.caption("Coming soon")
         with c2:
             if CV_EN_PATH.exists():
                 st.download_button(
-                    "CV EN",
+                    "Download CV — EN",
                     read_bytes(CV_EN_PATH),
                     "CV_MAYEUR_Nicolas_EN.pdf",
                     mime="application/pdf",
                 )
             else:
-                st.caption("CV ENG : Coming Soon")
+                st.caption("Coming soon")
 
 
 # =========================
 # PROJECTS
 # =========================
-_, col, _ = st.columns([0.5, 8, 0.5])
+_, col, _ = st.columns([0.3, 9, 0.3])
 with col:
-    render_section_label("Projects")
+    render_section_label("Selected Projects", "02 —")
 
     render_project_carousel(
         "project_1_box",
         PROJECT_TITLES["project_1"],
+        PROJECT_NUMS["project_1"],
         PROJECT_IMAGES["project_1"],
         "p1",
         PROJECT_LINKS["project_1"],
+        PROJECT_BADGE_GROUPS["project_1"],
     )
 
     render_project_carousel(
         "project_2_box",
         PROJECT_TITLES["project_2"],
+        PROJECT_NUMS["project_2"],
         PROJECT_IMAGES["project_2"],
         "p2",
         PROJECT_LINKS["project_2"],
+        PROJECT_BADGE_GROUPS["project_2"],
     )
 
     render_project_carousel(
         "project_3_box",
         PROJECT_TITLES["project_3"],
+        PROJECT_NUMS["project_3"],
         PROJECT_IMAGES["project_3"],
         "p3",
         PROJECT_LINKS["project_3"],
+        PROJECT_BADGE_GROUPS["project_3"],
     )

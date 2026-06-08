@@ -10,12 +10,16 @@ import streamlit as st
 # CONFIG
 # =========================
 st.set_page_config(
-    page_title="Nicolas Mayeur — Data Engineer specialized in Machine Learning on GCP",
+    page_title="Nicolas Mayeur — Data Engineer | Data & Information Systems | IBM Z Technologies",
     layout="wide",
 )
 
-PRESENTATION_TEXT = """Data Engineer specialized in Machine Learning systems on Google Cloud Platform. 
-I build production-grade data and ML infrastructures combining modern data architectures, feature engineering pipelines, monitoring and scalable cloud-native deployments."""
+PRESENTATION_TEXT = """Data Engineer specialized in information systems and data platforms. My background combines academic training in Economic and Financial Information Systems with hands-on experience in designing data solutions, process automation and data analytics.
+
+I am particularly interested in critical environments where reliability, security and system performance are essential. In this context, I am currently developing expertise in IBM Z and z/OS technologies, at the intersection of Data Engineering and Mainframe systems.
+
+My ambition is to contribute to high-value projects involving data management, information systems and the modernization of critical infrastructures.
+"""
 
 CV_FR_PATH = Path("assets/cv/CV_MAYEUR_Nicolas.pdf")
 CV_EN_PATH = Path("assets/cv/cv_en.pdf")
@@ -641,14 +645,14 @@ inject_css(CSS)
 # =========================
 with st.container(key="hero_box"):
     hero_badge_groups = [
-        ("Data Engineering", "blue",   ["BigQuery", "dbt", "Lakehouse", "GCS", "Data Modeling"]),
-        ("ML Systems",       "teal",   ["Feature Store", "Time Series ML", "ML Pipelines", "Feature Engineering", "Monitoring"]),
-        ("Cloud & MLOps",    "violet", ["Cloud Run", "CI/CD", "Docker", "GitHub Actions", "Infrastructure Design"]),
+        ("Data Engineering", "blue", ["Python", "SQL", "PostgreSQL", "Data Modeling", "ETL"]),
+        ("Information Systems", "teal", ["Data Quality", "Process Automation", "Business Intelligence", "Power BI"]),
+        ("IBM Z Technologies", "violet", ["z/OS", "COBOL", "JCL", "DB2"]),
     ]
     badges_html = render_badge_groups(hero_badge_groups)
     st.markdown(
         '<div class="hero-eyebrow">Portfolio — Nicolas Mayeur</div>'
-        '<div class="hero-name">Data Engineer<br>with ML expertise</div>'
+        '<div class="hero-name">Data Engineer<br>Data & Information Systems</div>'
         f'{badges_html}',
         unsafe_allow_html=True,
     )
